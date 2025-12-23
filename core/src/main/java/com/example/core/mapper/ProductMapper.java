@@ -25,7 +25,6 @@ public class ProductMapper {
         product.setPrice(dto.getPrice());
         product.setQuantity(dto.getQuantity());
 
-        // Set Warehouse reference by ID only (assuming only ID is passed)
         Warehouse warehouse = new Warehouse();
         warehouse.setId(dto.getWarehouseId());
         product.setWarehouse(warehouse);

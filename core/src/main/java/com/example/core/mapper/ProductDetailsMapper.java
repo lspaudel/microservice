@@ -25,7 +25,6 @@ public class ProductDetailsMapper {
         details.setWeight(dto.getWeight());
         details.setColor(dto.getColor());
 
-        // Assuming only the product ID is set in DTO. You need to set the Product reference here
         Product product = new Product();
         product.setId(dto.getProductId());
         details.setProduct(product);
