@@ -1,7 +1,7 @@
 package com.example.core.service.impl;
 
 import com.example.core.entity.Warehouse;
-import com.example.core.exception.ResourceNotFoundException;
+import com.example.shared.exception.ResourceNotFoundException;
 import com.example.core.repository.WarehouseRepository;
 import com.example.core.service.WarehouseService;
 import org.springframework.stereotype.Service;

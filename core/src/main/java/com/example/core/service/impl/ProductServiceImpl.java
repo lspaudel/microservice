@@ -2,10 +2,10 @@ package com.example.core.service.impl;
 
 import com.example.core.entity.Product;
 import com.example.core.entity.Warehouse;
-import com.example.core.exception.ResourceNotFoundException;
 import com.example.core.repository.ProductRepository;
 import com.example.core.repository.WarehouseRepository;
 import com.example.core.service.ProductService;
+import com.example.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

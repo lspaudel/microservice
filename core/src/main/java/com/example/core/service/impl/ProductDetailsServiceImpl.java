@@ -2,7 +2,7 @@ package com.example.core.service.impl;
 
 import com.example.core.entity.Product;
 import com.example.core.entity.ProductDetails;
-import com.example.core.exception.ResourceNotFoundException;
+import com.example.shared.exception.ResourceNotFoundException;
 import com.example.core.repository.ProductDetailsRepository;
 import com.example.core.repository.ProductRepository;
 import com.example.core.service.ProductDetailsService;
