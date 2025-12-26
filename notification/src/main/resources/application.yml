@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: notification-service
+    name: NOTIFICATION
   mail:
     host: smtp.gmail.com
     port: 587
