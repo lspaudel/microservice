@@ -2,7 +2,6 @@ package com.example.core.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Data
 public class ProductDetailsRequestDto {
@@ -15,7 +14,7 @@ public class ProductDetailsRequestDto {
     @Size(max = 100, message = "Manufacturer must be at most 100 characters")
     private String manufacturer;
 
-    @NotBlank()
+    @NotNull(message = "Weight must not be null")
     @Positive(message = "Weight must be greater than zero")
     private Double weight;
 
@@ -23,7 +22,7 @@ public class ProductDetailsRequestDto {
     @Size(max = 50, message = "Color must be at most 50 characters")
     private String color;
 
-    @NotBlank()
+    @NotNull(message = "Product ID must not be null")
     @Positive(message = "Product ID must be a positive number")
     private Long productId;
 }
