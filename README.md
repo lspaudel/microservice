@@ -50,7 +50,7 @@ Acts as the single entry point for all client requests.
 The gateway routes incoming requests to the appropriate service using Eureka service discovery and applies basic resiliency patterns.
 Requests starting with `/core/**` are routed to the CORE service.
 Requests starting with `/auth/**` are routed to the AUTH service.
-The gateway removes the service prefix (/core or /auth) before forwarding the request.
+The gateway removes the service prefix (`/core` or `/auth`) before forwarding the request.
 A circuit breaker is configured for each route to handle service failures gracefully. If the target service becomes unavailable, requests are redirected to a fallback endpoint.
 This prevents cascading failures and keeps the system responsive.
 
@@ -67,24 +67,90 @@ Service registry using Eureka.
 ![Eureka Clients](eureka_clients.png)
 ---
 
-## Running the Project
+### Docker Containerization (Recommended)
+
+Run the entire system (Database + 5 Services) with a single command.
 
 ### Prerequisites
-- Java 17+
-- Maven
-- Database (MySQL/PostgreSQL)
-### Build All Services
-```bash
-mvn clean install
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+
+### 1. Configure Environment
+Create a `.env` file in the root directory:
+```properties
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=ecommerce
+MAIL_USERNAME=your_gmail@gmail.com
+MAIL_PASSWORD=your_app_password
 ```
-### Run Services (recommended order)
-- discovery
-- gateway
-- shared
-- auth
-- core  
-Example :
-  ```   
-  bash cd discovery
-  mvn spring-boot:run
-  ```
+
+### 2. Build & Run
+```bash
+# Build the JAR files
+mvn clean package -DskipTests
+
+# Start Docker containers
+docker compose up --build
+```
+> **Note**: If you see connection errors initially, wait 1-2 minutes for the Discovery Service to fully initialize.
+
+### 3. Access Services
+- **Eureka Dashboard**: [http://localhost:8761](http://localhost:8761)
+- **API Gateway**: [http://localhost:8888](http://localhost:8888)
+
+---
+
+
+
+**Base URL**: `http://localhost:8888`
+
+#### 1. Notification - Send Email
+- **Endpoint**: `POST /api/notification/send`
+- **Body**:
+```json
+{
+  "to": "your_email@example.com",
+  "subject": "Test Email",
+  "body": "Hello from Microservices!"
+}
+```
+
+#### 2. Auth - Connectivity Test
+- **Endpoint**: `GET /auth/test`
+
+#### 3. Core - Create Warehouse
+- **Endpoint**: `POST /core/warehouse`
+- **Body**:
+```json
+{
+  "name": "Central Warehouse",
+  "address": "123 Tech Park, Silicon Valley"
+}
+```
+
+#### 4. Core - Create Product
+- **Endpoint**: `POST /core/products`
+- **Body**:
+```json
+{
+  "name": "Gaming Laptop",
+  "sku": "LAPTOP-ROG-001",
+  "price": 1499.99,
+  "quantity": 50,
+  "warehouseId": 1
+}
+```
+
+#### 5. Core - Add Product Details
+- **Endpoint**: `POST /core/product-details`
+- **Body** (JSON):
+```json
+{
+  "productId": 1,
+  "manufacturer": "Asus",
+  "description": "High performance gaming laptop",
+  "weight": 2.5,
+  "color": "Black"
+}
+```
+
