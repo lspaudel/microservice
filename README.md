@@ -1,156 +1,81 @@
-# microservice
-This project is a Spring Boot–based microservices system built using a modular architecture. 
+# Microservice
+
+A modular microservices ecosystem built with **Spring Boot 3.2.5** and **Spring Cloud 2023.0.1**. This platform demonstrates a modern distributed architecture with centralized configuration, service discovery, and resilient API routing.
 
 ---
 
-## Services Overview
+## System Architecture
 
-### 1. Core Service
-Handles core business functionality.
+The system is composed of several microservices:
 
-**Responsibilities**
-- Product management
-- Product details management
-- Warehouse management
-- JPA entities, repositories, services, controllers
-- Uses DTOs and mappers
-- Uses shared exception handling
-
-**Key Endpoints**
-- `/product`
-- `/product-details`
-- `/warehouse`
-
+- **Gateway Service (Port 8888)**: Single entry point, handling routing and resiliency.
+- **Discovery Service (Port 8761)**: Eureka Service Registry for dynamic service discovery.
+- **Config Server (Port 8889)**: Centralized configuration management using Spring Cloud Config.
+- **Core Service (Port 8075)**: Manages Products, Warehouses, and Inventory details.
+- **Auth Service (Port 8090)**: Handles authentication and service health monitoring.
+- **Notification Service (Port 8084)**: Asynchronous email delivery system.
+- **Shared Module**: Common library for exceptions, DTOs, and utility classes.
+  ![Architecture_Diagram](architecture_diagram.png)
 ---
 
-### 2. Shared Service
-Contains reusable code shared across all microservices.
+## Quick Start
 
-**Includes**
-- Global exception handler
-- Custom exceptions (e.g. `ResourceNotFoundException`)
+### 1. Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
+- [Maven](https://maven.apache.org/) (for building JARs manually).
 
-This module is added as a dependency in other services.
-
----
-
-### 3. Auth Service
-Responsible for authentication and authorization.
-
-**Responsibilities**
-- Login / registration
-
----
-
-### 4. Gateway Service
-Acts as the single entry point for all client requests.
-
-**Responsibilities**
-- Request routing  
-The gateway routes incoming requests to the appropriate service using Eureka service discovery and applies basic resiliency patterns.
-Requests starting with `/core/**` are routed to the CORE service.
-Requests starting with `/auth/**` are routed to the AUTH service.
-The gateway removes the service prefix (`/core` or `/auth`) before forwarding the request.
-A circuit breaker is configured for each route to handle service failures gracefully. If the target service becomes unavailable, requests are redirected to a fallback endpoint.
-This prevents cascading failures and keeps the system responsive.
-
----
-
-### 5. Discovery Service
-Service registry using Eureka.
-
-**Responsibilities**
-- Registers all services
-- Enables service-to-service communication without hardcoding URLs  
-  The following image shows all services registered with the Eureka Discovery Server.
-
-![Eureka Clients](eureka_clients.png)
----
-
-### Docker Containerization (Recommended)
-
-Run the entire system (Database + 5 Services) with a single command.
-
-### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
-
-### 1. Configure Environment
+### 2. Configure Environment
 Create a `.env` file in the root directory:
-```properties
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
+```env
+# Database
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_secure_db_password
 DB_NAME=ecommerce
-MAIL_USERNAME=your_gmail@gmail.com
-MAIL_PASSWORD=your_app_password
+
+# Email (Gmail App Password required)
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-gmail-app-password
 ```
 
-### 2. Build & Run
+### 3. Run with Docker
 ```bash
-# Build the JAR files
+# Build the project
 mvn clean package -DskipTests
 
-# Start Docker containers
+# Start all services
 docker compose up --build
 ```
-> **Note**: If you see connection errors initially, wait 1-2 minutes for the Discovery Service to fully initialize.
-
-### 3. Access Services
-- **Eureka Dashboard**: [http://localhost:8761](http://localhost:8761)
-- **API Gateway**: [http://localhost:8888](http://localhost:8888)
 
 ---
 
+## Documentation
 
+For detailed information on how to interact with the services, please refer the documentation:
 
-**Base URL**: `http://localhost:8888`
+#### [API Testing Guide (docs/API.md)](docs/API.md)
+The comprehensive guide to all REST endpoints, including:
+- **Core Service**: Product and Warehouse management.
+- **Notification Service**: How to send emails.
+- **Auth Service**: Health checks and connectivity.
+- **Testing Workflow**: The recommended order for testing the full system.
+- **Troubleshooting**: Solutions for common errors (404, 503, etc.).
 
-#### 1. Notification - Send Email
-- **Endpoint**: `POST /api/notification/send`
-- **Body**:
-```json
-{
-  "to": "your_email@example.com",
-  "subject": "Test Email",
-  "body": "Hello from Microservices!"
-}
-```
+---
 
-#### 2. Auth - Connectivity Test
-- **Endpoint**: `GET /auth/test`
+### Management Interfaces
 
-#### 3. Core - Create Warehouse
-- **Endpoint**: `POST /core/warehouse`
-- **Body**:
-```json
-{
-  "name": "Central Warehouse",
-  "address": "123 Tech Park, Silicon Valley"
-}
-```
+| Interface | URL |
+|-----------|-----|
+| **Eureka Dashboard** | [http://localhost:8761](http://localhost:8761) |
+| **Config Server** | [http://localhost:8889/core/default](http://localhost:8889/core/default) |
+| **API Gateway** | [http://localhost:8888](http://localhost:8888) |
 
-#### 4. Core - Create Product
-- **Endpoint**: `POST /core/products`
-- **Body**:
-```json
-{
-  "name": "Gaming Laptop",
-  "sku": "LAPTOP-ROG-001",
-  "price": 1499.99,
-  "quantity": 50,
-  "warehouseId": 1
-}
-```
+---
 
-#### 5. Core - Add Product Details
-- **Endpoint**: `POST /core/product-details`
-- **Body** (JSON):
-```json
-{
-  "productId": 1,
-  "manufacturer": "Asus",
-  "description": "High performance gaming laptop",
-  "weight": 2.5,
-  "color": "Black"
-}
-```
+### Common Commands
+
+- **Stop all services**: `docker compose down`
+- **Restart a service**: `docker restart <service-name>` (e.g., `docker restart notification`)
+- **View logs**: `docker logs <service-name> --tail 50`
+- **Build JARs only**: `mvn clean package -DskipTests`
 

@@ -1,10 +1,10 @@
 spring:
   application:
     name: gateway
-    
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
-server:
-  port: 8888
+  config:
+    import: "configserver:http://config-server:8889"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        enabled: true
