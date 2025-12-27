@@ -39,6 +39,9 @@ dependency-reduced-pom.xml
 .DS_Store
 Thumbs.db
 
+# Environment variables
+.env
+
 # Temporary files
 *.tmp
 *.swp
