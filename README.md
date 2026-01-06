@@ -6,7 +6,7 @@ This project is a Spring Boot–based microservices system built using a modular
 ## Services Overview
 
 ### 1. Core Service
-Handles core business functionality.
+This service handles the core business functionality.
 
 **Responsibilities**
 - Product management
@@ -24,7 +24,7 @@ Handles core business functionality.
 ---
 
 ### 2. Shared Service
-Contains reusable code shared across all microservices.
+This service contains reusable code shared across all microservices.
 
 **Includes**
 - Global exception handler
@@ -35,7 +35,7 @@ This module is added as a dependency in other services.
 ---
 
 ### 3. Auth Service
-Responsible for authentication and authorization.
+This service is responsible for authentication and authorization.
 
 **Responsibilities**
 - Login / registration
@@ -43,7 +43,7 @@ Responsible for authentication and authorization.
 ---
 
 ### 4. Gateway Service
-Acts as the single entry point for all client requests.
+This service acts as the single entry point for all client requests.
 
 **Responsibilities**
 - Request routing  
@@ -57,7 +57,7 @@ This prevents cascading failures and keeps the system responsive.
 ---
 
 ### 5. Discovery Service
-Service registry using Eureka.
+This is a service registry that uses Eureka.
 
 **Responsibilities**
 - Registers all services
