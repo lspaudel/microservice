@@ -1,0 +1,105 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservice-network
+
+  discovery:
+    build: ./discovery
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    networks:
+      - microservice-network
+
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8889:8889"
+    volumes:
+      - ./config-repo:/config-repo
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    depends_on:
+      - discovery
+    networks:
+      - microservice-network
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8888:8888"
+    environment:
+      - EUREKA_URI=http://discovery:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_CLOUD_GATEWAY_GLOBALCORS_CORSCONFIGURATIONS_[/**]_MAXAGE=3600
+    depends_on:
+      - discovery
+      - config-server
+    networks:
+      - microservice-network
+
+  auth:
+    build: ./auth
+    container_name: auth
+    ports:
+      - "8090:8090"
+    depends_on:
+      - discovery
+      - config-server
+    networks:
+      - microservice-network
+
+  core:
+    build: ./core
+    container_name: core
+    ports:
+      - "8075:8075"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - discovery
+      - postgres
+      - config-server
+    networks:
+      - microservice-network
+
+  notification:
+    build: ./notification
+    container_name: notification
+    ports:
+      - "8084:8084"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+    depends_on:
+      - discovery
+      - config-server
+    networks:
+      - microservice-network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  microservice-network:
+    driver: bridge

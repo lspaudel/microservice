@@ -1,23 +1,10 @@
-server:
-  port: 8084
-
 spring:
   application:
-    name: NOTIFICATION
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+    name: notification
+  config:
+    import: "configserver:http://config-server:8889"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        enabled: true

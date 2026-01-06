@@ -35,9 +35,15 @@ dependency-reduced-pom.xml
 /*.ipr
 /*.iws
 
+# VS Code
+.vscode/
+
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Environment variables
+.env
 
 # Temporary files
 *.tmp

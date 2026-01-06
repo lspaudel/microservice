@@ -1,10 +1,10 @@
 spring:
   application:
     name: auth
-server:
-  port: 8090
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+  config:
+    import: "configserver:http://config-server:8889"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        enabled: true
