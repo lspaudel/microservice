@@ -1,6 +1,6 @@
 # Microservices API Testing Guide
 
-> **⚠️ IMPORTANT:** Always use the API Gateway at `http://localhost:8888` to access all services. Never call services directly on their ports.
+> **IMPORTANT:** Always use the API Gateway at `http://localhost:8888` to access all services. Never call services directly on their ports.
 
 ---
 
