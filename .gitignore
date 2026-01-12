@@ -53,3 +53,4 @@ Thumbs.db
 # Environment-specific configs with credentials
 **/application-dev.yml
 **/application-local.yml
+.env
