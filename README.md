@@ -155,3 +155,9 @@ curl http://localhost:8075/products/1
 ```bash
 curl http://localhost:8075/actuator/health
 ```
+
+### 5. Verify Tracing (Zipkin)
+**GET** `http://localhost:9411`
+- Open Zipkin UI.
+- Click "Run Query" to see traces after making requests.
+- You should see spans across `gateway`, `core`, `auth`, etc.
