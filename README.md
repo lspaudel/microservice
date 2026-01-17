@@ -108,9 +108,9 @@ mvn clean install
 2. **Microservices**:
    - Discovery Service (`cd discovery && mvn spring-boot:run`)
    - Gateway Service (`cd gateway && mvn spring-boot:run`)
-   - Auth Service (`cd auth && mvn spring-boot:run`)
-    export RABBITMQ_USERNAME=YourUsername
-    export RABBITMQ_PASSWORD=YourPassword
+   - Auth Service (`cd auth && mvn spring-boot:run`)  
+    `export RABBITMQ_USERNAME=YourUsername`  
+    `export RABBITMQ_PASSWORD=YourPassword`
     
 
 You can import these cURL commands into Postman to verify the system.
