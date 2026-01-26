@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-AddTraceHeaders">
+    <DisplayName>AM-AddTraceHeaders</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="X-Trace-ID">{messageid}</Header>
+            <Header name="X-Apigee-Proxy">microservice-gateway-proxy</Header>
+        </Headers>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="microservice-gateway-proxy">
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1737866901000</CreatedAt>
+    <CreatedBy>apigee-developer</CreatedBy>
+    <Description>API Proxy for Microservices Gateway - Routes to Spring Cloud Gateway</Description>
+    <DisplayName>Microservice Gateway Proxy</DisplayName>
+    <LastModifiedAt>1737866901000</LastModifiedAt>
+    <LastModifiedBy>apigee-developer</LastModifiedBy>
+    <Policies>
+        <Policy>AM-SetCORSHeaders</Policy>
+        <Policy>AM-AddTraceHeaders</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec></Spec>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>
