@@ -6,11 +6,13 @@ This project is a Spring Boot–based microservices system built using a modular
 ## Architecture Overview
 
 This system uses a modern microservices architecture with the following patterns:
+- **API Management**: Apigee API Proxy (optional layer for advanced API management)
 - **Service Discovery**: Netflix Eureka
 - **API Gateway**: Spring Cloud Gateway
 - **Event-Driven Architecture**: RabbitMQ for asynchronous communication
 - **Distributed Caching**: Redis for high-performance data access
 - **Circuit Breaker**: Resilience4j for fault tolerance
+- **Distributed Tracing**: Zipkin with Micrometer
 
 ---
 
@@ -158,3 +160,53 @@ curl http://localhost:8075/actuator/health
 - Open Zipkin UI.
 - Click "Run Query" to see traces after making requests.
 - You should see spans across `gateway`, `core`, `auth`, etc.
+
+---
+
+## Apigee API Proxy (Optional)
+
+An optional Apigee proxy layer is available for advanced API management capabilities such as:
+- Centralized API governance and security
+- Rate limiting and quota management
+- Advanced analytics and monitoring
+- API versioning and lifecycle management
+
+### Directory Structure
+```
+apigee-bundle/
+├── apiproxy/                              # Apigee proxy configuration
+│   ├── microservice-gateway-proxy.xml    
+│   ├── proxies/default.xml               # Client-facing endpoint
+│   ├── targets/default.xml               # Routes to Spring Cloud Gateway
+│   └── policies/                         # CORS, tracing policies
+├── microservice-gateway-proxy.zip        # Deployment package
+└── README.md                             # Detailed documentation
+```
+
+### Quick Start
+
+1. **Deploy to Apigee**:
+   ```bash
+   cd apigee-bundle
+   # Upload microservice-gateway-proxy.zip to Apigee UI
+   ```
+
+2. **Access via Apigee**:
+   All endpoints are prefixed with `/microservices/v1`:
+   ```bash
+   # Instead of:
+   curl http://localhost:8888/core/products
+   
+   # Use:
+   curl https://{apigee-org}-{env}.apigee.net/microservices/v1/core/products
+   ```
+
+3. **Documentation**:
+   See [apigee-bundle/README.md](apigee-bundle/README.md) for complete deployment instructions, API examples, and troubleshooting.
+
+### Benefits
+- **API Security**: Add OAuth, API keys, or JWT validation
+- **Traffic Management**: Rate limiting, spike arrest, quota policies
+- **Analytics**: Request/response logging, traffic patterns, error rates
+- **Developer Portal**: Auto-generated API documentation
+- **Transformation**: Request/response payload manipulation
